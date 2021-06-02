@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 set(CMAKE_CXX_STANDARD 20)
 
 set(OpenGL_GL_PREFERENCE GLVND)
+add_compile_definitions(DEBUG)
 
 project(OpenGL_Learning)
 
