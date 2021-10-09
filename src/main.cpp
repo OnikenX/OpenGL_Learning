@@ -10,6 +10,8 @@
 #include <sstream>
 
 using namespace std::literals;
+
+/// DEBUGGING
 #define MSG_ERROR "[ERROR]: "
 
 #ifdef __MSVC_VER
@@ -22,6 +24,8 @@ using namespace std::literals;
 #define BREAK_POINT raise(SIGTRAP)
 #endif
 #define GLLOG_AND_ASSERT() ASSERT_NO_LOG(GLLogCall( __FILE__, __LINE__, nullptr))
+
+//para melhor debugging usa se o glcall
 #define GLCall(x)  x;\
 ASSERT_NO_LOG(GLLogCall( __FILE__, __LINE__, #x));
 
@@ -34,6 +38,15 @@ static bool GLLogCall(const char *file, unsigned int line, const char *function)
     }
     return no_errors;
 }
+
+/// GLOBAL VARIABLES
+//o tempo que demora para haver uma variação das cores
+const auto time_interval = 30ms;
+//define se a variação se pode ter nas cores
+const float variation = 0.02f;
+
+
+
 
 #define ASSERT_NO_LOG(x) if(!(x)) BREAK_POINT
 #define ASSERT(x) if(!(x)) assert_error(__FILE__, __LINE__, #x); BREAK_POINT
@@ -200,14 +213,13 @@ int main(int argc, char *argv[]) {
     GLCall(glUniform4f(u_color_location, colors[0], colors[1], colors[2], 1.0f));
     auto getNow = []() { return (std::chrono::high_resolution_clock::now()); };
     auto start = getNow();
-    static const auto time_interval = 30ms;
-    static const float variation = 0.06f;
     while (!glfwWindowShouldClose(window)) {
 
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         GLCall(GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)));
         auto now = getNow();
+
         if (std::chrono::duration_cast<std::chrono::milliseconds>(now - start).count() > (time_interval).count()) {
             const uint8_t max = sizeof(colors) / sizeof(float);
             uint8_t ant = max - 1;
