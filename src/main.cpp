@@ -214,7 +214,6 @@ int main(int argc, char *argv[]) {
     auto getNow = []() { return (std::chrono::high_resolution_clock::now()); };
     auto start = getNow();
     while (!glfwWindowShouldClose(window)) {
-
         /* Render here */
         GLCall(glClear(GL_COLOR_BUFFER_BIT));
         GLCall(GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr)));
